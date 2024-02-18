@@ -8,7 +8,6 @@ import 'package:tr_store/features/presentation/widgets/app_network_image.dart';
 import 'package:tr_store/features/presentation/widgets/shimmer/item_details_placeholder.dart';
 
 part 'widgets/product_details_scaffold.dart';
-part 'widgets/header_image_view.dart';
 part 'widgets/product_loaded_view.dart';
 part 'widgets/product_details_load_failed_view.dart';
 

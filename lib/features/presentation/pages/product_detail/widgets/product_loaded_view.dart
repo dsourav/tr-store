@@ -10,22 +10,33 @@ class _ProductLoadedView extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _HeaderImageView(productEntity.thumbnail),
-            Card(
+            AppNetworkImage(
+              imageUrl: productEntity.image,
+              imageShape: ImageShape.square,
+              size: const Size(double.infinity, 400.0),
+            ),
+            const SizedBox(height: 10.0),
+            const Text("Title", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
               child: ListTile(
+                contentPadding: const EdgeInsets.all(0.0),
                 title: Text(productEntity.title),
-                trailing: Text("Price: ${productEntity.userId}"),
+                trailing: Text(
+                  "Price: ${productEntity.userId}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             const Divider(),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                  productEntity.content,
-                  textAlign: TextAlign.justify,
-                ),
+            const Text("Description", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                productEntity.content,
+                textAlign: TextAlign.justify,
               ),
             )
           ],

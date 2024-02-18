@@ -25,6 +25,7 @@ class _Scaffold extends StatelessWidget {
           return const SizedBox();
         },
       ),
+      floatingActionButton: FloatingActionButton(child: const Icon(Icons.add_shopping_cart), onPressed: () {}),
     );
   }
 }
