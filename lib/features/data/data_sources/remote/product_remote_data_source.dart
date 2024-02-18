@@ -17,24 +17,28 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
   @override
   Future<List<ProductEntity>> getAll() async {
-    final response = await _dio.get("posts");
-    if (response.statusCode == 200) {
-      List<ProductEntity> products =
-          (response.data as List).map((productJson) => ProductModel.fromJson(productJson)).toList();
-      return products;
-    } else {
-      throw ServerException();
-    }
+    try {
+      final response = await _dio.get("posts");
+
+      if (response.statusCode == 200) {
+        List<ProductEntity> products =
+            (response.data as List).map((productJson) => ProductModel.fromJson(productJson)).toList();
+        return products;
+      }
+    } catch (_) {}
+    throw ServerException();
   }
 
   @override
   Future<ProductEntity> getOne(int id) async {
-    final response = await _dio.get("posts", queryParameters: {"id": id});
-    if (response.statusCode == 200) {
-      ProductEntity product = ProductModel.fromJson(response.data);
-      return product;
-    } else {
-      throw ServerException();
-    }
+    try {
+      final response = await _dio.get("posts", queryParameters: {"id": id});
+      final data = response.data as List;
+      if (response.statusCode == 200 && data.isNotEmpty) {
+        ProductEntity product = ProductModel.fromJson(data.first);
+        return product;
+      }
+    } catch (_) {}
+    throw ServerException();
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tr_store/core/di/injectable.dart';
 import 'package:tr_store/core/routing/app_router.dart';
 import 'package:tr_store/core/theme/app_theme.dart';
@@ -17,18 +16,15 @@ class TrStoreApp extends StatelessWidget {
   final _darkTheme = AppDarkThemeData();
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [],
-      child: AppTheme(
-        lightTheme: _lightTheme,
-        darkTheme: _darkTheme,
-        child: MaterialApp.router(
-          theme: _lightTheme.materialThemeData,
-          darkTheme: _darkTheme.materialThemeData,
-          routerConfig: getIt<AppRouter>().config(),
-          title: 'TR Store',
-          debugShowCheckedModeBanner: false,
-        ),
+    return AppTheme(
+      lightTheme: _lightTheme,
+      darkTheme: _darkTheme,
+      child: MaterialApp.router(
+        theme: _lightTheme.materialThemeData,
+        darkTheme: _darkTheme.materialThemeData,
+        routerConfig: getIt<AppRouter>().config(),
+        title: 'TR Store',
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

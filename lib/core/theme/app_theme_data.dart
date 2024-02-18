@@ -4,9 +4,8 @@ import 'app_color.dart';
 
 class AppLightThemeData implements AppThemeData {
   @override
-  ThemeData get materialThemeData => ThemeData(
-        brightness: Brightness.light,
-      );
+  ThemeData get materialThemeData =>
+      ThemeData(brightness: Brightness.light, appBarTheme: const AppBarTheme(backgroundColor: AppColor.purpleLight));
   @override
   Color get inputBorderColor => AppColor.white;
 
@@ -34,9 +33,8 @@ class AppLightThemeData implements AppThemeData {
 
 class AppDarkThemeData implements AppThemeData {
   @override
-  ThemeData get materialThemeData => ThemeData(
-        brightness: Brightness.dark,
-      );
+  ThemeData get materialThemeData =>
+      ThemeData(brightness: Brightness.dark, appBarTheme: const AppBarTheme(backgroundColor: AppColor.purpleLight));
   @override
   Color get inputBorderColor => AppColor.white;
 

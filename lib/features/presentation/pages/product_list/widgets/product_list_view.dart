@@ -7,21 +7,31 @@ class _ProductListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return ListTile(
-          leading: AppNetworkImage(
-            imageShape: ImageShape.circular,
-            imageUrl: product.thumbnail,
-            size: const Size(120, 120),
-          ),
-          title: Text(product.title),
-          subtitle: Text(product.content),
-          trailing: Text("Price: ${product.userId}"),
-        );
-      },
-    );
+    return products.isEmpty
+        ? const Center(
+            child: Text("No Item Found"),
+          )
+        : ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final product = products[index];
+              return Card(
+                child: ListTile(
+                  leading: AppNetworkImage(
+                    imageShape: ImageShape.square,
+                    imageUrl: product.thumbnail,
+                    size: const Size(80, 120),
+                  ),
+                  title: Text(product.title),
+                  subtitle: Text(product.content, maxLines: 2),
+                  trailing: Text("Price: ${product.userId}"),
+                  onTap: () {
+                    final router = getIt<AppRouter>();
+                    router.push(ProductDetailsRoute(id: product.userId));
+                  },
+                ),
+              );
+            },
+          );
   }
 }

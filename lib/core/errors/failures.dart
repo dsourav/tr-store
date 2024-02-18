@@ -15,6 +15,4 @@ class ConnectionFailure extends Failure {}
 
 class DatabaseFailure extends Failure {}
 
-class SharedPreferencesFailure extends Failure {}
-
 class CacheFailure extends Failure {}

@@ -13,9 +13,7 @@ class $ProductItemsTable extends ProductItems
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
@@ -52,8 +50,6 @@ class $ProductItemsTable extends ProductItems
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (data.containsKey('title')) {
       context.handle(
@@ -83,7 +79,7 @@ class $ProductItemsTable extends ProductItems
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   ProductItem map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -207,24 +203,20 @@ class ProductItemsCompanion extends UpdateCompanion<ProductItem> {
   final Value<String> content;
   final Value<String> image;
   final Value<String> thumbnail;
-  final Value<int> rowid;
   const ProductItemsCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.content = const Value.absent(),
     this.image = const Value.absent(),
     this.thumbnail = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   ProductItemsCompanion.insert({
-    required int id,
+    this.id = const Value.absent(),
     required String title,
     required String content,
     required String image,
     required String thumbnail,
-    this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        title = Value(title),
+  })  : title = Value(title),
         content = Value(content),
         image = Value(image),
         thumbnail = Value(thumbnail);
@@ -234,7 +226,6 @@ class ProductItemsCompanion extends UpdateCompanion<ProductItem> {
     Expression<String>? content,
     Expression<String>? image,
     Expression<String>? thumbnail,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -242,7 +233,6 @@ class ProductItemsCompanion extends UpdateCompanion<ProductItem> {
       if (content != null) 'content': content,
       if (image != null) 'image': image,
       if (thumbnail != null) 'thumbnail': thumbnail,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -251,15 +241,13 @@ class ProductItemsCompanion extends UpdateCompanion<ProductItem> {
       Value<String>? title,
       Value<String>? content,
       Value<String>? image,
-      Value<String>? thumbnail,
-      Value<int>? rowid}) {
+      Value<String>? thumbnail}) {
     return ProductItemsCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       content: content ?? this.content,
       image: image ?? this.image,
       thumbnail: thumbnail ?? this.thumbnail,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -281,9 +269,6 @@ class ProductItemsCompanion extends UpdateCompanion<ProductItem> {
     if (thumbnail.present) {
       map['thumbnail'] = Variable<String>(thumbnail.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -294,8 +279,7 @@ class ProductItemsCompanion extends UpdateCompanion<ProductItem> {
           ..write('title: $title, ')
           ..write('content: $content, ')
           ..write('image: $image, ')
-          ..write('thumbnail: $thumbnail, ')
-          ..write('rowid: $rowid')
+          ..write('thumbnail: $thumbnail')
           ..write(')'))
         .toString();
   }
@@ -311,9 +295,7 @@ class $CartItemsTable extends CartItems
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _thumbnailMeta =
       const VerificationMeta('thumbnail');
   @override
@@ -345,8 +327,6 @@ class $CartItemsTable extends CartItems
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (data.containsKey('thumbnail')) {
       context.handle(_thumbnailMeta,
@@ -370,7 +350,7 @@ class $CartItemsTable extends CartItems
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   CartItem map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -478,22 +458,18 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
   final Value<String> thumbnail;
   final Value<String> title;
   final Value<String> content;
-  final Value<int> rowid;
   const CartItemsCompanion({
     this.id = const Value.absent(),
     this.thumbnail = const Value.absent(),
     this.title = const Value.absent(),
     this.content = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   CartItemsCompanion.insert({
-    required int id,
+    this.id = const Value.absent(),
     required String thumbnail,
     required String title,
     required String content,
-    this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        thumbnail = Value(thumbnail),
+  })  : thumbnail = Value(thumbnail),
         title = Value(title),
         content = Value(content);
   static Insertable<CartItem> custom({
@@ -501,14 +477,12 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
     Expression<String>? thumbnail,
     Expression<String>? title,
     Expression<String>? content,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (thumbnail != null) 'thumbnail': thumbnail,
       if (title != null) 'title': title,
       if (content != null) 'content': content,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -516,14 +490,12 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
       {Value<int>? id,
       Value<String>? thumbnail,
       Value<String>? title,
-      Value<String>? content,
-      Value<int>? rowid}) {
+      Value<String>? content}) {
     return CartItemsCompanion(
       id: id ?? this.id,
       thumbnail: thumbnail ?? this.thumbnail,
       title: title ?? this.title,
       content: content ?? this.content,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -542,9 +514,6 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
     if (content.present) {
       map['content'] = Variable<String>(content.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -554,8 +523,7 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
           ..write('id: $id, ')
           ..write('thumbnail: $thumbnail, ')
           ..write('title: $title, ')
-          ..write('content: $content, ')
-          ..write('rowid: $rowid')
+          ..write('content: $content')
           ..write(')'))
         .toString();
   }
