@@ -15,6 +15,7 @@ class _Scaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("TR Store Products"),
+        actions: const [CartItemCountView()],
       ),
       body: BlocBuilder<ProductListCubit, ProductListState>(builder: (context, state) {
         if (state is ProductListLoading) {

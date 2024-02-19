@@ -295,7 +295,11 @@ class $CartItemsTable extends CartItems
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   static const VerificationMeta _thumbnailMeta =
       const VerificationMeta('thumbnail');
   @override
@@ -307,14 +311,13 @@ class $CartItemsTable extends CartItems
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
       'title', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _contentMeta =
-      const VerificationMeta('content');
+  static const VerificationMeta _uidMeta = const VerificationMeta('uid');
   @override
-  late final GeneratedColumn<String> content = GeneratedColumn<String>(
-      'content', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+  late final GeneratedColumn<int> uid = GeneratedColumn<int>(
+      'uid', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, thumbnail, title, content];
+  List<GeneratedColumn> get $columns => [id, thumbnail, title, uid];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -340,11 +343,11 @@ class $CartItemsTable extends CartItems
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
-    if (data.containsKey('content')) {
-      context.handle(_contentMeta,
-          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
+    if (data.containsKey('uid')) {
+      context.handle(
+          _uidMeta, uid.isAcceptableOrUnknown(data['uid']!, _uidMeta));
     } else if (isInserting) {
-      context.missing(_contentMeta);
+      context.missing(_uidMeta);
     }
     return context;
   }
@@ -361,8 +364,8 @@ class $CartItemsTable extends CartItems
           .read(DriftSqlType.string, data['${effectivePrefix}thumbnail'])!,
       title: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      content: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
+      uid: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}uid'])!,
     );
   }
 
@@ -376,19 +379,19 @@ class CartItem extends DataClass implements Insertable<CartItem> {
   final int id;
   final String thumbnail;
   final String title;
-  final String content;
+  final int uid;
   const CartItem(
       {required this.id,
       required this.thumbnail,
       required this.title,
-      required this.content});
+      required this.uid});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['thumbnail'] = Variable<String>(thumbnail);
     map['title'] = Variable<String>(title);
-    map['content'] = Variable<String>(content);
+    map['uid'] = Variable<int>(uid);
     return map;
   }
 
@@ -397,7 +400,7 @@ class CartItem extends DataClass implements Insertable<CartItem> {
       id: Value(id),
       thumbnail: Value(thumbnail),
       title: Value(title),
-      content: Value(content),
+      uid: Value(uid),
     );
   }
 
@@ -408,7 +411,7 @@ class CartItem extends DataClass implements Insertable<CartItem> {
       id: serializer.fromJson<int>(json['id']),
       thumbnail: serializer.fromJson<String>(json['thumbnail']),
       title: serializer.fromJson<String>(json['title']),
-      content: serializer.fromJson<String>(json['content']),
+      uid: serializer.fromJson<int>(json['uid']),
     );
   }
   @override
@@ -418,17 +421,16 @@ class CartItem extends DataClass implements Insertable<CartItem> {
       'id': serializer.toJson<int>(id),
       'thumbnail': serializer.toJson<String>(thumbnail),
       'title': serializer.toJson<String>(title),
-      'content': serializer.toJson<String>(content),
+      'uid': serializer.toJson<int>(uid),
     };
   }
 
-  CartItem copyWith(
-          {int? id, String? thumbnail, String? title, String? content}) =>
+  CartItem copyWith({int? id, String? thumbnail, String? title, int? uid}) =>
       CartItem(
         id: id ?? this.id,
         thumbnail: thumbnail ?? this.thumbnail,
         title: title ?? this.title,
-        content: content ?? this.content,
+        uid: uid ?? this.uid,
       );
   @override
   String toString() {
@@ -436,13 +438,13 @@ class CartItem extends DataClass implements Insertable<CartItem> {
           ..write('id: $id, ')
           ..write('thumbnail: $thumbnail, ')
           ..write('title: $title, ')
-          ..write('content: $content')
+          ..write('uid: $uid')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, thumbnail, title, content);
+  int get hashCode => Object.hash(id, thumbnail, title, uid);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -450,39 +452,39 @@ class CartItem extends DataClass implements Insertable<CartItem> {
           other.id == this.id &&
           other.thumbnail == this.thumbnail &&
           other.title == this.title &&
-          other.content == this.content);
+          other.uid == this.uid);
 }
 
 class CartItemsCompanion extends UpdateCompanion<CartItem> {
   final Value<int> id;
   final Value<String> thumbnail;
   final Value<String> title;
-  final Value<String> content;
+  final Value<int> uid;
   const CartItemsCompanion({
     this.id = const Value.absent(),
     this.thumbnail = const Value.absent(),
     this.title = const Value.absent(),
-    this.content = const Value.absent(),
+    this.uid = const Value.absent(),
   });
   CartItemsCompanion.insert({
     this.id = const Value.absent(),
     required String thumbnail,
     required String title,
-    required String content,
+    required int uid,
   })  : thumbnail = Value(thumbnail),
         title = Value(title),
-        content = Value(content);
+        uid = Value(uid);
   static Insertable<CartItem> custom({
     Expression<int>? id,
     Expression<String>? thumbnail,
     Expression<String>? title,
-    Expression<String>? content,
+    Expression<int>? uid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (thumbnail != null) 'thumbnail': thumbnail,
       if (title != null) 'title': title,
-      if (content != null) 'content': content,
+      if (uid != null) 'uid': uid,
     });
   }
 
@@ -490,12 +492,12 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
       {Value<int>? id,
       Value<String>? thumbnail,
       Value<String>? title,
-      Value<String>? content}) {
+      Value<int>? uid}) {
     return CartItemsCompanion(
       id: id ?? this.id,
       thumbnail: thumbnail ?? this.thumbnail,
       title: title ?? this.title,
-      content: content ?? this.content,
+      uid: uid ?? this.uid,
     );
   }
 
@@ -511,8 +513,8 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
     if (title.present) {
       map['title'] = Variable<String>(title.value);
     }
-    if (content.present) {
-      map['content'] = Variable<String>(content.value);
+    if (uid.present) {
+      map['uid'] = Variable<int>(uid.value);
     }
     return map;
   }
@@ -523,7 +525,7 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
           ..write('id: $id, ')
           ..write('thumbnail: $thumbnail, ')
           ..write('title: $title, ')
-          ..write('content: $content')
+          ..write('uid: $uid')
           ..write(')'))
         .toString();
   }

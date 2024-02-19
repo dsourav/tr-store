@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tr_store/core/di/injectable.dart';
 import 'package:tr_store/core/routing/app_router.dart';
-import 'package:tr_store/core/routing/route_path.dart';
 import 'package:tr_store/features/domain/entities/product_entity.dart';
+import 'package:tr_store/features/presentation/cubits/cart_items/cart_items_cubit.dart';
 import 'package:tr_store/features/presentation/cubits/product_list/product_list_cubit.dart';
 import 'package:tr_store/features/presentation/widgets/app_network_image.dart';
+import 'package:tr_store/features/presentation/widgets/cart_count_view.dart';
 import 'package:tr_store/features/presentation/widgets/shimmer/list_item_placeholder.dart';
 
 part 'widgets/product_list_scaffold.dart';

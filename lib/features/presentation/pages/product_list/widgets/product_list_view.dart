@@ -23,8 +23,31 @@ class _ProductListView extends StatelessWidget {
                     size: const Size(80, 120),
                   ),
                   title: Text(product.title),
-                  subtitle: Text(product.content, maxLines: 2),
-                  trailing: Text("Price: ${product.userId}"),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(product.content, maxLines: 2),
+                      const SizedBox(height: 6.0),
+                      Text(
+                        "Price: ${product.userId}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8.0),
+                    ],
+                  ),
+                  trailing: PopupMenuButton(
+                    onSelected: (value) {
+                      getIt<CartItemsCubit>().addToCart(product, context);
+                    },
+                    itemBuilder: (BuildContext bc) {
+                      return const [
+                        PopupMenuItem(
+                          value: '/cart',
+                          child: Text("Add to cart"),
+                        ),
+                      ];
+                    },
+                  ),
                   onTap: () {
                     final router = getIt<AppRouter>();
                     router.push(ProductDetailsRoute(id: product.userId));

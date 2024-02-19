@@ -11,10 +11,8 @@ class ProductItems extends Table {
 }
 
 class CartItems extends Table {
-  IntColumn get id => integer()();
+  IntColumn get id => integer().autoIncrement()();
   TextColumn get thumbnail => text()();
   TextColumn get title => text()();
-  TextColumn get content => text()();
-  @override
-  Set<Column> get primaryKey => {id};
+  IntColumn get uid => integer()();
 }

@@ -12,6 +12,7 @@ class _Scaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Products Details"),
+        actions: const [CartItemCountView()],
       ),
       body: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
         builder: (context, state) {
@@ -25,7 +26,19 @@ class _Scaffold extends StatelessWidget {
           return const SizedBox();
         },
       ),
-      floatingActionButton: FloatingActionButton(child: const Icon(Icons.add_shopping_cart), onPressed: () {}),
+      floatingActionButton: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+        builder: (context, state) {
+          if (state is ProductDetailsLoaded) {
+            return FloatingActionButton(
+                child: const Icon(Icons.add_shopping_cart),
+                onPressed: () {
+                  getIt<CartItemsCubit>().addToCart(state.productEntity, context);
+                });
+          }
+
+          return const SizedBox();
+        },
+      ),
     );
   }
 }

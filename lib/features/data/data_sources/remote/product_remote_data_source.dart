@@ -32,10 +32,10 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   @override
   Future<ProductEntity> getOne(int id) async {
     try {
-      final response = await _dio.get("posts", queryParameters: {"id": id});
-      final data = response.data as List;
-      if (response.statusCode == 200 && data.isNotEmpty) {
-        ProductEntity product = ProductModel.fromJson(data.first);
+      final response = await _dio.get("posts/$id");
+
+      if (response.statusCode == 200) {
+        ProductEntity product = ProductModel.fromJson(response.data);
         return product;
       }
     } catch (_) {}
